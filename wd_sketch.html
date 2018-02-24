@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Wd-Sketch</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <style>
+        body {
+            margin-top: 50px;
+        }
+
+        #id {
+            margin-top: 50px;
+        }
+
+        #search_form {
+            text-align: center;
+        }
+
+        .paragraph {
+            margin-top: 50px;
+
+        }
+
+        .key {
+            color: #08AD1E;
+        }
+
+        .val {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .val span {
+            background-color: #e0d8d8;
+            margin-left: 10px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div id="search_form">
+            <input name="word" type="text">
+            <button type="submit" value="search">Search</button>
+        </div>
+        <div id='result'>
+        </div>
+    </div>
+
+    <script>
+        $("button").click(function() {
+            var word = $("input").val();
+            var url = 'https://5g2vk5o7si.execute-api.ap-northeast-1.amazonaws.com/api/wd_sketch/' + word
+            $.getJSON(
+            url,
+            function(data) {
+                $.each(data, function(key,value){
+                    console.log(data,key,value);
+                    var paragraph_div = $('<div class="paragraph"></div>')
+                    var key_div = $('<div class="key">' + key + '<hr></div>')
+                    var value_div = $('<div class="val"></div>')
+
+                    $.each(value, function( index, item ) {
+                        var item_span = $('<span>'+item + '</span>')
+                        value_div.append(item_span)
+                    });
+
+                    paragraph_div.append(key_div)
+                    paragraph_div.append(value_div)
+
+                    $("#result").append(paragraph_div)
+
+                });
+            }
+        );
+        });
+    </script>
+
+</body>
+</html>
